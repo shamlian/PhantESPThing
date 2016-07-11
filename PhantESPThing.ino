@@ -20,7 +20,7 @@ const char PrivateKey[] = "your private key here";
 const int led = 5;
 
 // Time between readings
-#define SLEEPSECS 30
+const int sleepSecs = 30;
 
 // Defines for lux sensor
 SFE_TSL2561 light;
@@ -28,7 +28,7 @@ boolean gain = false;
 unsigned int ms;
 unsigned long integrationStart;
 
-float getTemperature(){
+float getTemperature() {
   const int tmp102Address = 0x48;
   Wire.requestFrom(tmp102Address, 2); 
 
@@ -42,7 +42,7 @@ float getTemperature(){
   return celsius;
 }
 
-void setup(void){
+void setup(void) {
   Phant phant(PhantHost, PublicKey, PrivateKey);
 
   #ifdef USE_LED
@@ -82,8 +82,7 @@ void setup(void){
     delay(10);
   }
   unsigned int data0, data1;
-  if (light.getData(data0,data1))
-  {
+  if (light.getData(data0,data1)) {
     // getData() returned true, communication was successful
 
     double lux;    // Resulting lux value
@@ -98,8 +97,7 @@ void setup(void){
     
     phant.add("lux", lux);
   }
-  else
-  {
+  else {
     phant.add("lux", -1);
   }
   
@@ -107,14 +105,13 @@ void setup(void){
 
 // Post data  
   WiFiClient client;
-  if (client.connect(PhantHost, 80))
-  {
+  if (client.connect(PhantHost, 80)) {
     client.print(phant.post());
   }
   #ifdef USE_LED
     digitalWrite(led, 0);
   #endif
-  ESP.deepSleep(SLEEPSECS * 1000000);
+  ESP.deepSleep(sleepSecs * 1000000);
 }
 
 void loop(void){
