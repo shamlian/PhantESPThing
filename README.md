@@ -2,3 +2,5 @@
 Connecting the Sparkfun ESP8266 Thing to Phant (soldering on optional TMP102 and TSL2561)
 
 To use, put in your phant public and private key for a feed with the following three keys; "name," "temp," and "lux." Optionally, un-comment the line to send battery voltage as well and add the "batt" key. Solder a wire between the reset via in the middle of the board and the XPD pin. On the first run, the ESP8266 thing will go into soft AP mode; connect to it and it will request credentials to get on your network. Once it successfully authenticates, it will continuously update via Phant!
+
+This sketch takes advantage of the ESP8266's ability to sleep for two purposes. First, sleeping allows us to get a lot more use out of the device--with a 210mAh battery, this sketch can run for about 14 hours sleeping 30 seconds between reads. Second, sleeping mitigates the problem of the ESP8266 heating up the TMP102 on the board; with the chips always on, there is about a 5 degree C rise on the board; with 30 seconds of sleeping, I see only a 0.1 degree C rise.
